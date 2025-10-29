@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Register - JOMPO FarmLink</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-green-50 font-sans">
+  <nav class="bg-green-800 text-white p-4 flex justify-between items-center">
+    <a href="index.html" class="text-2xl font-bold">JOMPO FarmLink</a>
+    <div id="authLinks"></div>
+  </nav>
+
+  <section class="flex justify-center items-center py-20">
+    <div class="bg-white p-10 rounded-lg shadow-md w-full max-w-md">
+      <h2 class="text-3xl font-bold text-green-800 mb-6 text-center">Register</h2>
+      <form id="registerForm" class="space-y-4">
+        <input type="text" id="name" placeholder="Full Name" required class="w-full px-4 py-2 border rounded" />
+        <input type="email" id="email" placeholder="Email" required class="w-full px-4 py-2 border rounded" />
+        <input type="password" id="password" placeholder="Password" required class="w-full px-4 py-2 border rounded" />
+        <input type="text" id="location" placeholder="Location (Town/City)" required class="w-full px-4 py-2 border rounded" />
+        <select id="role" required class="w-full px-4 py-2 border rounded">
+          <option value="farmer">Farmer</option>
+          <option value="buyer">Buyer</option>
+          <option value="service-provider">Service Provider</option>
+        </select>
+        <button type="submit" class="w-full py-2 bg-green-700 text-white rounded">Register</button>
+      </form>
+    </div>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>
