@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Smart Assistant - JOMPO FarmLink</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-green-50 min-h-screen">
+  <nav class="bg-green-800 text-white p-4 flex justify-between items-center">
+    <a href="index.html" class="text-2xl font-bold">JOMPO FarmLink</a>
+    <div class="space-x-4">
+      <a href="index.html" class="hover:underline">Home</a>
+      <a href="market.html" class="hover:underline">Market</a>
+      <a href="weather.html" class="hover:underline hidden">Weather</a>
+      <a href="ai.html" class="hover:underline font-semibold">Smart Assistant</a>
+    </div>
+  </nav>
+
+  <section class="p-6 max-w-3xl mx-auto">
+    <h2 class="text-3xl font-bold text-green-800 mb-2">Smart Agricultural Assistant</h2>
+    <p class="mb-6 text-gray-700">
+      Get AI guidance on farming and check real-time weather forecasts for your area.
+    </p>
+
+    <!-- WEATHER SECTION -->
+    <div id="weatherSection" class="bg-white shadow rounded p-4 mb-6 hidden">
+      <h3 class="font-bold text-green-700 mb-2">🌤️ Current Weather</h3>
+      <p id="weatherData" class="text-gray-800">Fetching weather...</p>
+    </div>
+
+    <!-- CHAT INTERFACE -->
+    <div class="bg-white shadow rounded p-4">
+      <div id="chatContainer" class="h-80 overflow-y-auto mb-4 p-2 space-y-2 border rounded bg-gray-50"></div>
+
+      <div class="flex gap-2">
+        <textarea id="userInput" rows="2" class="flex-grow p-3 border rounded focus:ring-2 focus:ring-green-700" placeholder="Ask about soil, crops, or sustainable farming..."></textarea>
+        <button id="askAI" class="bg-green-700 text-white px-5 py-2 rounded hover:bg-green-800">Ask</button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const chatContainer = document.getElementById('chatContainer');
+    const weatherSection = document.getElementById('weatherSection');
+    const weatherData = document.getElementById('weatherData');
+
+    // Chat bubble helper
+    function addMessage(sender, text) {
+      const div = document.createElement('div');
+      div.className = sender === 'user'
+        ? 'bg-green-700 text-white p-2 rounded-lg self-end w-fit ml-auto'
+        : 'bg-gray-200 text-gray-800 p-2 rounded-lg w-fit';
+      div.textContent = text;
+      chatContainer.appendChild(div);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    // Handle AI Query
+    document.getElementById('askAI').addEventListener('click', async () => {
+      const query = document.getElementById('userInput').value.trim();
+      if (!query) return;
+      addMessage('user', query);
+      document.getElementById('userInput').value = '';
+
+      addMessage('ai', 'Thinking...');
+
+      const res = await fetch('https://us-central1-jompo-farmlink-web.cloudfunctions.net/askAI', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query })
+      });
+      const data = await res.json();
+
+      const reply = data.reply || 'No response.';
+      chatContainer.lastChild.textContent = reply;
+    });
+
+    // Weather Fetcher (OpenWeather API)
+    async function fetchWeather() {
+      if (!navigator.geolocation) {
+        weatherData.textContent = 'Geolocation not supported.';
+        weatherSection.classList.remove('hidden');
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(async position => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        const apiKey = 'YOUR_OPENWEATHER_API_KEY'; // 🔑 replace with your key
+        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+
+        try {
+          const res = await fetch(url);
+          const data = await res.json();
+          const desc = data.weather[0].description;
+          const temp = data.main.temp;
+          const humidity = data.main.humidity;
+
+          weatherData.innerHTML = `
+            <strong>Location:</strong> ${data.name}<br>
+            <strong>Temperature:</strong> ${temp}°C<br>
+            <strong>Humidity:</strong> ${humidity}%<br>
+            <strong>Condition:</strong> ${desc}
+          `;
+          weatherSection.classList.remove('hidden');
+        } catch (err) {
+          weatherData.textContent = 'Failed to load weather data.';
+          weatherSection.classList.remove('hidden');
+        }
+      });
+    }
+
+    fetchWeather();
+  </script>
+</body>
+</html>
