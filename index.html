@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>JOMPO FarmLink</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Firebase (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-green-50 font-sans">
+  <nav class="bg-green-800 text-white p-4 flex justify-between items-center">
+    <a href="index.html" class="text-2xl font-bold">JOMPO FarmLink</a>
+    <div id="authLinks"></div>
+  </nav>
+
+  <header class="text-center py-20 bg-green-100">
+    <h1 class="text-4xl md:text-6xl font-bold text-green-800 mb-4">Connecting Farmers to Buyers</h1>
+    <p class="text-green-700 mb-6">Sell produce, access services and trainings, and use AI & weather tools to increase yields.</p>
+    <div class="space-x-3">
+      <a href="market.html" class="px-6 py-3 bg-yellow-400 text-green-900 rounded-lg">Browse Marketplace</a>
+      <a href="register.html" class="px-6 py-3 bg-green-700 text-white rounded-lg">Join as Farmer</a>
+    </div>
+  </header>
+
+  <main class="py-16 px-6 md:px-20">
+    <section class="grid md:grid-cols-3 gap-8">
+      <div class="bg-white p-6 rounded shadow">
+        <h3 class="text-xl font-bold text-green-800">Sell Products</h3>
+        <p class="mt-2">Post farm produce, reach buyers across Kenya.</p>
+      </div>
+      <div class="bg-white p-6 rounded shadow">
+        <h3 class="text-xl font-bold text-green-800">Rent Services</h3>
+        <p class="mt-2">Tractors, solar pumps, training and more.</p>
+      </div>
+      <div class="bg-white p-6 rounded shadow">
+        <h3 class="text-xl font-bold text-green-800">AI & Weather</h3>
+        <p class="mt-2">Use AI advice and weather forecasts to plan better.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-green-800 text-white p-6 text-center">
+    <p>© 2025 JOMPO FarmLink | info@jompo.org</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
